@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>30-Day Coding Roadmap Checklist</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        header {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        h1 {
+            color: #667eea;
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 10px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 15px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            margin-top: 10px;
+            color: #666;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .week-section {
+            background: white;
+            margin-bottom: 15px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .week-header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px 20px;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .week-header:hover {
+            background: linear-gradient(135deg, #5568d3, #663a8f);
+        }
+
+        .week-toggle {
+            font-size: 20px;
+            transition: transform 0.3s ease;
+        }
+
+        .week-toggle.open {
+            transform: rotate(180deg);
+        }
+
+        .week-content {
+            padding: 15px;
+            display: none;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .week-content.open {
+            display: block;
+            max-height: 1000px;
+        }
+
+        .task {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            padding: 12px;
+            background: #f9f9f9;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .task:hover {
+            background: #f0f0f0;
+        }
+
+        .task.completed {
+            background: #e8f5e9;
+        }
+
+        .task input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            cursor: pointer;
+            margin-top: 2px;
+            accent-color: #667eea;
+        }
+
+        .task-content {
+            flex: 1;
+        }
+
+        .task-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 4px;
+        }
+
+        .task.completed .task-title {
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        .task-description {
+            font-size: 13px;
+            color: #666;
+            margin-top: 4px;
+            line-height: 1.4;
+        }
+
+        .task.completed .task-description {
+            color: #999;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            margin-top: 5px;
+            opacity: 0.9;
+        }
+
+        .reset-btn {
+            width: 100%;
+            padding: 15px;
+            margin-top: 20px;
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .reset-btn:hover {
+            background: #ff5252;
+            transform: translateY(-2px);
+        }
+
+        .footer {
+            text-align: center;
+            color: white;
+            margin-top: 20px;
+            font-size: 12px;
+            padding: 10px;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 20px;
+            }
+
+            .week-header {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 30-Day Coding Roadmap</h1>
+            <p>Your path to building skills & cracking interviews</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text">
+                <span id="completedCount">0</span> / <span id="totalCount">0</span> tasks completed
+            </div>
+        </header>
+
+        <div class="stats" id="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="weekProgress">0%</div>
+                <div class="stat-label">This Week</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="overallProgress">0%</div>
+                <div class="stat-label">Overall</div>
+            </div>
+        </div>
+
+        <!-- Week 1 -->
+        <div class="week-section">
+            <div class="week-header" onclick="toggleWeek(this)">
+                <span>📅 Week 1: Foundation + Setup</span>
+                <span class="week-toggle">▼</span>
+            </div>
+            <div class="week-content">
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Pick your primary language</div>
+                        <div class="task-description">Choose: Java, Python, or C++. Java recommended for placements.</div>
+                    </div>
+                </div>
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Learn language basics</div>
+                        <div class="task-description">Variables, loops, functions, arrays, strings, conditions</div>
+                    </div>
+                </div>
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Solve 8-10 easy DSA problems</div>
+                        <div class="task-description">Use LeetCode or HackerRank. Focus on understanding.</div>
+                    </div>
+                </div>
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Set up GitHub account</div>
+                        <div class="task-description">Create account, set profile picture, write bio</div>
+                    </div>
+                </div>
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Learn Git & GitHub basics</div>
+                        <div class="task-description">git init, git add, git commit, git push</div>
+                    </div>
+                </div>
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Choose your first project</div>
+                        <div class="task-description">To-Do App (recommended), Calculator, or Notes App</div>
+                    </div>
+                </div>
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Create GitHub profile README</div>
+                        <div class="task-description">Add your name, bio, skills, and goals</div>
+                    </div>
+                </div>
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Post progress on Instagram/LinkedIn</div>
+                        <div class="task-description">Share what you learned today. Build in public.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Week 2 -->
+        <div class="week-section">
+            <div class="week-header" onclick="toggleWeek(this)">
+                <span>📅 Week 2: DSA Basics + Build Project</span>
+                <span class="week-toggle">▼</span>
+            </div>
+            <div class="week-content">
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Learn Arrays & Strings DSA</div>
+                        <div class="task-description">Understand arrays, indexing, string manipulation</div>
+                    </div>
+                </div>
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Learn Hashing basics</div>
+                        <div class="task-description">Hash maps, hash sets, key-value pairs</div>
+                    </div>
+                </div>
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Learn Two Pointers technique</div>
+                        <div class="task-description">Solve 3-4 two pointer problems</div>
+                    </div>
+                </div>
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Solve 12-18 easy/medium DSA problems</div>
+                        <div class="task-description">Focus on understanding logic, not speed</div>
+                    </div>
+                </div>
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Start building your project</div>
+                        <div class="task-description">Set up project structure (HTML/CSS/JS or language of choice)</div>
+                    </div>
+                </div>
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Implement basic features</div>
+                        <div class="task-description">Add task, delete task, mark complete, save in localStorage</div>
+                    </div>
+                </div>
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Create project GitHub repo</div>
+                        <div class="task-description">Upload code, write README with description</div>
+                    </div>
+                </div>
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Daily progress posts</div>
+                        <div class="task-description">Post learning & coding progress on social media</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Week 3 -->
+        <div class="week-section">
+            <div class="week-header" onclick="toggleWeek(this)">
+                <span>📅 Week 3: Strengthen DSA + Finish Project</span>
+                <span class="week-toggle">▼</span>
+            </div>
+            <div class="week-content">
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Master Recursion basics</div>
+                        <div class="task-description">Understand recursive calls, base cases, examples</div>
+                    </div>
+                </div>
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Learn Sorting algorithms</div>
+                        <div class="task-description">Bubble sort, merge sort, quick sort concepts</div>
+                    </div>
+                </div>
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Learn Searching algorithms</div>
+                        <div class="task-description">Binary search, linear search patterns</div>
+                    </div>
+                </div>
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Solve 15-20 more DSA problems</div>
+                        <div class="task-description">Try to solve 80% on your own. Aim for consistency.</div>
+                    </div>
+                </div>
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Improve project UI/UX</div>
+                        <div class="task-description">Add colors, themes, dark mode, better design</div>
+                    </div>
+                </div>
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Add advanced features to project</div>
+                        <div class="task-description">Edit task, filter tasks, priority levels</div>
+                    </div>
+                </div>
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Learn Git workflows properly</div>
+                        <div class="task-description">Branches, commits, pull requests, merging</div>
+                    </div>
+                </div>
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Commit code daily to GitHub</div>
+                        <div class="task-description">Practice consistent git workflow</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Week 4 -->
+        <div class="week-section">
+            <div class="week-header" onclick="toggleWeek(this)">
+                <span>📅 Week 4: Deploy + Polish + Plan Next</span>
+                <span class="week-toggle">▼</span>
+            </div>
+            <div class="week-content">
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Deploy project to GitHub Pages</div>
+                        <div class="task-description">Enable GitHub Pages in repo settings. Get live URL.</div>
+                    </div>
+                </div>
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Create polished project README</div>
+                        <div class="task-description">Screenshots, features, tech stack, live demo link</div>
+                    </div>
+                </div>
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Update GitHub profile with projects</div>
+                        <div class="task-description">Add project links to your profile README</div>
+                    </div>
+                </div>
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Solve 10-15 final DSA problems</div>
+                        <div class="task-description">Review topics learned. Total 50+ problems this month.</div>
+                    </div>
+                </div>
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Write a project summary blog/post</div>
+                        <div class="task-description">What you built, what you learned, challenges faced</div>
+                    </div>
+                </div>
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Share deployed project on LinkedIn</div>
+                        <div class="task-description">Post live demo link, celebrate your progress</div>
+                    </div>
+                </div>
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Review what you learned this month</div>
+                        <div class="task-description">Write reflection, note wins, identify gaps</div>
+                    </div>
+                </div>
+                <div class="task">
+                    <input type="checkbox" onchange="updateProgress()">
+                    <div class="task-content">
+                        <div class="task-title">Plan next month's goals & projects</div>
+                        <div class="task-description">Decide next project, DSA topics, interview prep</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <button class="reset-btn" onclick="resetAll()">Reset All Progress</button>
+
+        <div class="footer">
+            <p>💪 Stay consistent. Keep building. You got this!</p>
+            <p>Made for: Anusha Palivela | Updated: October 2026</p>
+        </div>
+    </div>
+
+    <script>
+        // Load progress from localStorage
+        function loadProgress() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach((checkbox, index) => {
+                const saved = localStorage.getItem(`task_${index}`);
+                if (saved === 'true') {
+                    checkbox.checked = true;
+                    checkbox.closest('.task').classList.add('completed');
+                }
+            });
+            updateProgress();
+        }
+
+        // Save progress to localStorage
+        function saveProgress() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            checkboxes.forEach((checkbox, index) => {
+                localStorage.setItem(`task_${index}`, checkbox.checked);
+            });
+        }
+
+        // Update progress bar and stats
+        function updateProgress() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+            const completed = document.querySelectorAll('input[type="checkbox"]:checked').length;
+            const total = checkboxes.length;
+
+            // Update task styling
+            checkboxes.forEach(checkbox => {
+                if (checkbox.checked) {
+                    checkbox.closest('.task').classList.add('completed');
+                } else {
+                    checkbox.closest('.task').classList.remove('completed');
+                }
+            });
+
+            // Update progress bar
+            const percentage = (completed / total) * 100;
+            document.getElementById('progressFill').style.width = percentage + '%';
+
+            // Update counters
+            document.getElementById('completedCount').textContent = completed;
+            document.getElementById('totalCount').textContent = total;
+
+            // Update stats
+            document.getElementById('overallProgress').textContent = Math.round(percentage) + '%';
+
+            // Calculate week progress
+            const weeks = document.querySelectorAll('.week-content');
+            let weekIndex = 0;
+            weeks.forEach((week, index) => {
+                const weekCheckboxes = week.querySelectorAll('input[type="checkbox"]');
+                const weekCompleted = week.querySelectorAll('input[type="checkbox"]:checked').length;
+                if (weekIndex === new Date().getDay() || index === 0) {
+                    document.getElementById('weekProgress').textContent = 
+                        Math.round((weekCompleted / weekCheckboxes.length) * 100) + '%';
+                }
+            });
+
+            saveProgress();
+        }
+
+        // Toggle week section
+        function toggleWeek(header) {
+            const content = header.nextElementSibling;
+            const toggle = header.querySelector('.week-toggle');
+
+            content.classList.toggle('open');
+            toggle.classList.toggle('open');
+        }
+
+        // Reset all progress
+        function resetAll() {
+            if (confirm('Are you sure you want to reset all progress? This cannot be undone.')) {
+                document.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+                    checkbox.checked = false;
+                    checkbox.closest('.task').classList.remove('completed');
+                });
+                localStorage.clear();
+                updateProgress();
+                alert('Progress reset! Start fresh! 💪');
+            }
+        }
+
+        // Initialize on page load
+        window.addEventListener('load', () => {
+            loadProgress();
+            // Open Week 1 by default
+            document.querySelector('.week-header').click();
+        });
+    </script>
+</body>
+</html>
